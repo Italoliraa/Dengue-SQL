@@ -1,0 +1,37 @@
+/*Criando o banco de dados*/
+create database dengue3MA; 
+use dengue3MA; 
+
+/*Conhecendo o bando de dados*/
+select * from dengue limit 20; 
+
+/*Bairros que tiveram casos de covid*/
+select distinct no_bairro_residencia from dengue; 
+
+/* Soma total de sexos por bairros que tiveram dengue*/ 
+select no_bairro_residencia as bairro, tp_sexo as sexo,
+count(*)
+from dengue
+group by no_bairro_residencia, tp_sexo
+order by count(*) desc, no_bairro_residencia,  tp_sexo;
+
+/*Ver os tipos de sexo que estão com dengue*/
+select distinct tp_sexo from dengue; 
+
+/*Soma total das pessoas que estão com dengue*/
+select tp_sexo as sexo, count(*) as quantidades
+from dengue
+group by tp_sexo; 
+
+/*Total de casos de dengue por mês*/
+select month(dt_notificacao) as mes, count(*)
+from dengue
+group by month(dt_notificacao);
+
+/*Puxar a quantidade e o percentual de casos de dengue nos bairros*/
+select no_bairro_residencia as bairro,
+count(*) as quantidade,
+(count(*)/(select count(*) from dengue))*100 as percentual
+from dengue
+group by no_bairro_residencia
+order by count(*) desc, no_bairro_residencia; 
